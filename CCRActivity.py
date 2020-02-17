@@ -3,11 +3,22 @@ import pygame
 import os
 import pygbutton 
 pygame.init()
+class Question(object):
+    def __init__(self, prompt, ans1, hp1, m1, ans2, hp2, m2):
+        self.prompt = prompt
+        self.ans1 = ans1
+        self.hp1 = hp1 
+        self.m1 = m1
+        self.ans2 = ans2
+        self.hp2 = hp2
+        self.m2 = m2
 screen = pygame.display.set_mode((600,400))
-buttonObj = pygbutton.PygButton((100, 325, 100, 50), 'Decision 1')
-buttonObj2 = pygbutton.PygButton((400, 325, 100, 50), 'Decision 2')
+qnum = 0
+q1 = Question("This is a test question", "Answer 1", 5, -5, "Answer 2", -5, 5)
+buttonObj = pygbutton.PygButton((100, 325, 100, 50), q1.ans1)
+buttonObj2 = pygbutton.PygButton((400, 325, 100, 50), q1.ans2)
 font = pygame.font.Font('freesansbold.ttf', 32) 
-text = font.render('Question goes here', True, (0,0,0))
+text = font.render(q1.prompt , True, (0,0,0))
 textRect = text.get_rect()
 textRect.center = (300, 275)  
 sad = pygame.image.load(r'C:\Users\bryan\Desktop\Code-Projects\CCRActivity\Sprite1.png') 
@@ -36,13 +47,19 @@ while done == False:
         if event.type == pygame.QUIT:
             done = True
         if 'click' in buttonObj.handleEvent(event):
-            health -= 5
-            if(health<0):
-                health = 0
+            health += q1.hp1
+            money += q1.m1
         if 'click' in buttonObj2.handleEvent(event):
-            health += 5
-            if(health>150):
-                health = 150
+            health += q1.hp2
+            money += q1.m2
+        if(health<0):
+            health = 0
+        if(health>150):
+            health = 150
+        if(money<0):
+            money = 0
+        if(money>150):
+            money = 150
         screen.fill((255,255,255))
         pygame.draw.rect(screen, (255, 0, 0), (225, 50, health, 30))
         pygame.draw.rect(screen, (0, 0, 0), (225, 50, 150, 30), 2 )
@@ -77,14 +94,3 @@ while done == False:
         
         
     pygame.display.flip()
-
-
-class Question(object):
-    def __init__(self, prompt, ans1, hp1, m1, ans2, hp2, m2):
-        self.prompt = prompt
-        self.ans1 = ans1
-        self.hp1 = hp1 
-        self.m1 = m1
-        self.ans2 = ans2
-        self.hp2 = hp2
-        self.m2 = m2
