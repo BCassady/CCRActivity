@@ -21,6 +21,7 @@ def update():
     pygame.draw.rect(screen, (0, 0, 0), (225, 0, 150, 30), 2 )
     buttonObj = pygbutton.PygButton((100, 325, 100, 50), questions[qnum].ans1)
     buttonObj2 = pygbutton.PygButton((400, 325, 100, 50), questions[qnum].ans2)
+    text = font.render(questions[qnum].prompt , True, (0,0,0))
     buttonObj.draw(screen)
     buttonObj2.draw(screen)
     screen.blit(text, textRect)
@@ -48,6 +49,7 @@ def loadImgs():
     dead = pygame.image.load(r'C:\Users\bryan\Desktop\Code-Projects\CCRActivity\OhMyGodYouDontUseFolders\Sprite10.png') 
 # Function that sets up text to ask questions
 def textSetup():
+    global font
     font = pygame.font.Font('freesansbold.ttf', 32) 
     global text
     text = font.render(questions[qnum].prompt , True, (0,0,0))
@@ -83,7 +85,8 @@ pygame.init()
 screen = pygame.display.set_mode((600,400))
 qnum = 0 # Stores how many questions have been asked
 questions = [] # Stores all question objects
-questions.append(Question("This is a test question", "Answer 1", 5, -5, "Answer 2", -5, 5))
+questions.append(Question("Should you do drugs?", "Yes", -5, -20, "No", 10, 0))
+questions.append(Question("Should you speed?", "Yes", 5, -15, "No", -5, 10))
 buttonObj = pygbutton.PygButton((100, 325, 100, 50), questions[qnum].ans1)
 buttonObj2 = pygbutton.PygButton((400, 325, 100, 50), questions[qnum].ans2) 
 health = 75 # We are starting the health value at 75
@@ -99,9 +102,13 @@ while done == False:
         if 'click' in buttonObj.handleEvent(event):
             health += questions[qnum].hp1 # Adjust the health value by the health multiplier for the first answer
             money += questions[qnum].m1 # Adjust the money value by the money multiplier for the first answer
+            if(qnum<len(questions)-1):
+                qnum += 1
         if 'click' in buttonObj2.handleEvent(event):
             health += questions[qnum].hp2 # Adjust the health value by the health multiplier for the second answer
             money += questions[qnum].m2 # Adjust the money value by the money multiplier for the second answer
+            if(qnum<len(questions)-1):
+                qnum += 1
         # Check to make sure no value has gone higher then the maximum
         if(health<0):
             health = 0
